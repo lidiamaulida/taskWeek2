@@ -27,10 +27,38 @@
               <li class="nav-item m-2 ps-3">
                 <a class="nav-link active fw-bold" href="/home">Home</a>
               </li>
+              {{#if isLogin}}
               <li class="nav-item m-2">
                 <a class="nav-link" href="/addMyProject">Add Project</a>
               </li>
             </ul>
+
+            <div class="d-flex justify-content-end">
+            <ul class="navbar-nav me-auto mb-2 ms-5 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Hallo, {{user}}</a>
+              </li>
+              <li class="nav-item ms-3 me-5">
+                <a class="nav-link active" href="/logout">Logout</a>
+              </li>
+            </ul>
+            {{else}}
+
+              <li class="nav-item m-2">
+                <a class="nav-link" href="/addMyProject"></a>
+              </li>
+            </ul>
+            <div class="d-flex justify-content-end">
+            <ul class="navbar-nav me-auto mb-2 ms-5 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+              </li>
+              <li class="nav-item ms-3 me-5">
+                <a class="nav-link active" href="/login">Login</a>
+              </li>
+            {{/if}}
+            </ul>
+
             <div class="d-flex">
                 <a href="contactMe" class="btn bg-black text-white p-2 rounded-3">Contact Me</a>
               </div>
@@ -39,6 +67,14 @@
       </nav>
 
 <!-- Card -->
+
+<!-- alert from flash -->
+  {{#if messages.success}}
+  <div class="alert alert-dark" role="alert">
+   {{messages.success}}
+  </div>
+  {{/if}}
+
     <div class="container d-flex justify-content-center align-items-center" style="height: 90vh;">
       <div class="card d-flex justify-content-center shadow" style="width: 1000px;">
         <div class="row g-0 d-flex justify-content-center">
@@ -56,10 +92,10 @@
               <i class="fa-solid fa-download  ps-2"></i>
               </div>
               <div class="d-flex mt-5">
-                <i class="fa-brands fa-linkedin pe-2" style="font-size: 35px;"></i>
-                <i class="fa-brands fa-square-instagram ps-3" style="font-size: 35px;"></i>
-                <i class="fa-brands fa-facebook ps-3" style="font-size: 35px;"></i>
-                <i class="fa-brands fa-twitter ps-3" style="font-size: 35px;"></i>
+                <a href="http://id.linkedin.com"><i class="fa-brands fa-linkedin pe-2 text-black" style="font-size: 35px;"></i></a>
+                <a href="http://www.instagram.com"><i class="fa-brands fa-square-instagram ps-3 text-black" style="font-size: 35px;"></i></a>
+                <a href="http://www.facebook.com"><i class="fa-brands fa-facebook ps-3 text-black" style="font-size: 35px;"></i></a>
+                <a href="http://twitter.com"><i class="fa-brands fa-twitter ps-3 text-black" style="font-size: 35px;"></i></a>
               </div>
             </div>
           </div>
@@ -78,71 +114,36 @@
 
 <!-- My Project -->
     <h1 class="fw-bold d-flex justify-content-center mt-5">My Project</h1>
-    <div class="container d-flex justify-content-center">
+    <div class="container d-flex justify-content-center" style="flex-wrap: wrap;">
+
+      {{#each blogs}}
       <div class="card my-5 shadow mx-5" style="width: 18rem; border: none;">
-        <img src="/image/programmerBook.png" class="card-img-top p-2 rounded-4" style="height: 225px;" alt="...">
+        <img src="{{this.image}}" class="card-img-top p-2 rounded-4" style="height: 225px; object-fit: cover;" alt="...">
         <div class="card-body">
-          <h6 class="card-title">Dumbways Mobile App - 2021</h6>
-          <p>durasi : 3 bulan</p>
-          <p class="card-text">App that used for dumbways student, it was 
-            deployed and can downloaded on playstore.
-            Happy download</p>
+          <a href="/blogDetail/{{this.id}}" style="text-decoration: none;"><h6 class="card-title text-black">{{this.title}}</h6></a>
+          <p>durasi: {{this.distanceTime}} | {{this.author}}</p>
+          <p class="card-text">{{this.description}}</p>
             <div class="d-flex my-3">
-              <i class="fa-brands fa-node-js pe-2 fs-5"></i>
+              {{#if this.technologies.Node}}
+                <i class="fab fa-node-js pe-2 fs-5"></i>
+              {{/if}}
+              {{#if this.technologies.React}}
               <i class="fa-brands fa-google-play px-2 fs-5"></i>
+              {{/if}}
+              {{#if this.technologies.Next}}
               <i class="fa-brands fa-android px-2 fs-5"></i>
+              {{/if}}
+              {{#if this.technologies.Typescript}}
               <i class="fa-solid fa-mobile px-2 fs-5"></i>
+              {{/if}}
             </div>
-          <div class="d-flex justify-content-center" style="background: papayawhip;">
-            <button class="mx-1 btn bg-black text-white rounded-2 px-5">edit</button>
-            <button class="mx-1 btn bg-black text-white rounded-2 px-5">delete</button>
+          <div class="d-flex justify-content-center">
+            <a href="/update/{{this.id}}"><button class="mx-1 btn bg-black text-white rounded-2 px-5">edit</button></a>
+            <a href="/delete/{{this.id}}" style="text-decoration: none;" ><button class="mx-1 btn bg-black text-white rounded-2 px-5">delete</button></a>
           </div>
         </div>
       </div>
-
-      <div class="card my-5 shadow mx-5" style="width: 18rem; border: none;">
-        <img src="/image/offie.jpeg" class="card-img-top p-2 rounded-4" style="height: 225px;" alt="">
-        <div class="card-body">
-          <h6 class="card-title">Dumbways Mobile App - 2021</h6>
-          <p>durasi : 3 bulan</p>
-          <p class="card-text">App that used for dumbways student, it was 
-            deployed and can downloaded on playstore.
-            Happy download</p>
-            <div class="d-flex my-3">
-              <i class="fa-brands fa-node-js pe-2 fs-5"></i>
-              <i class="fa-brands fa-google-play px-2 fs-5"></i>
-              <i class="fa-brands fa-android px-2 fs-5"></i>
-              <i class="fa-solid fa-mobile px-2 fs-5"></i>
-            </div>
-          <div class="d-flex justify-content-center" style="background: papayawhip;">
-            <button class="mx-1 btn bg-black text-white rounded-2 px-5">edit</button>
-            <button class="mx-1 btn bg-black text-white rounded-2 px-5">delete</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card my-5 shadow mx-5" style="width: 18rem; border: none;">
-        <img src="/image/oxford.jpeg" class="card-img-top p-2 rounded-4" style="height: 225px;" alt="...">
-        <div class="card-body">
-          <h6 class="card-title">Dumbways Mobile App - 2021</h6>
-          <p>durasi : 3 bulan</p>
-          <p class="card-text">App that used for dumbways student, it was 
-            deployed and can downloaded on playstore.
-            Happy download</p>
-            <div class="d-flex my-3">
-              <i class="fa-brands fa-node-js pe-2 fs-5"></i>
-              <i class="fa-brands fa-google-play px-2 fs-5"></i>
-              <i class="fa-brands fa-android px-2 fs-5"></i>
-              <i class="fa-solid fa-mobile px-2 fs-5"></i>
-            </div>
-          <div class="d-flex justify-content-center" style="background: papayawhip;">
-            <button class="mx-1 btn bg-black text-white rounded-2 px-5">edit</button>
-            <button class="mx-1 btn bg-black text-white rounded-2 px-5">delete</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
+      {{/each}}
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
